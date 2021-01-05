@@ -90,7 +90,7 @@ long LinuxParser::UpTime() {
 long LinuxParser::Jiffies() {
   vector<string> jiffies = CpuUtilization();
   long totalJiffies = 0;
-  for (string jiffies : jiffies) {
+  for (auto jiffies : jiffies) {
     try {
       totalJiffies += stol(jiffies);
     } catch (const std::exception& e) {
@@ -218,8 +218,8 @@ string LinuxParser::User(int pid) {
   return user;
 }
 
-long LinuxParser::UpTime(int pid) {
-  long ticks =
+long int LinuxParser::UpTime(int pid) {
+  long int ticks =
       KeyValueParser::GetValue<long>(to_string(pid) + kStatFilename, 14);
 
   return ticks;
