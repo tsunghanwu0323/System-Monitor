@@ -90,9 +90,9 @@ long LinuxParser::UpTime() {
 long LinuxParser::Jiffies() {
   vector<string> jiffies = CpuUtilization();
   long totalJiffies = 0;
-  for (auto jiffies : jiffies) {
+  for (string jiffy : jiffies) {
     try {
-      totalJiffies += stol(jiffies);
+      totalJiffies += stol(jiffy);
     } catch (const std::exception& e) {
       totalJiffies += 0;
     }
