@@ -39,15 +39,15 @@ string LinuxParser::OperatingSystem() {
 
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::Kernel() {
-  string os, kernel;
+  string os, kernel, version;
   string line;
   std::ifstream stream(kProcDirectory + kVersionFilename);
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    linestream >> os >> kernel;
+    linestream >> os >> kernel >> version;
   }
-  return kernel;
+  return version;
 }
 
 // BONUS: Update this to use std::filesystem
@@ -220,7 +220,9 @@ string LinuxParser::User(int pid) {
 
 long int LinuxParser::UpTime(int pid) {
   long int ticks =
-      KeyValueParser::GetValue<long>(to_string(pid) + kStatFilename, 14);
+      KeyValueParser::GetValue<long>(to_string(pid) + kStatFilename, 21) /
+      sysconf(_SC_CLK_TCK);
+  long sysUpTime = LinuxParser::UpTime();
 
-  return ticks;
+  return sysUpTime - ticks;
 }
